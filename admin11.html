@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Adminka · Koreys tili 200</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+<style>
+:root{--bg:#F6F9FD;--card:#fff;--line:#E3EAF4;--soft:#EEF3FA;--ink:#1C2A44;--muted:#5D6B85;--btn:#2B7BC0;--sky:#3E97E0;--sky-soft:#E3F0FC;--sky-ink:#1F6AA8;--pink:#E8578A;--pink-soft:#FCE6EE;--ok:#167A50;--ok-soft:#DFF5EA;--bad:#B42E2E;--bad-soft:#FCE4E4;--sun-soft:#FDF4DF;--sun-ink:#8A6410;--side:#1C2A44;--side2:#33466B;--side-mut:#B9C6DD}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,system-ui,-apple-system,"Segoe UI",sans-serif;font-size:14px;line-height:1.5}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:2.5px solid var(--sky);outline-offset:2px}
+.hide{display:none!important}
+.layout{display:flex;min-height:100vh}
+.side{width:236px;flex:0 0 auto;background:var(--side);color:#fff;padding:22px 14px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;padding:0 8px 18px}
+.brand i{width:38px;height:38px;border-radius:12px;background:var(--sky);display:grid;place-items:center;font-style:normal;font-weight:800}
+.brand b{display:block;font-size:14px}.brand span{font-size:11px;color:var(--side-mut)}
+.nav{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;font-weight:600;color:var(--side-mut);width:100%;text-align:left}
+.nav[aria-current="true"]{background:var(--side2);color:#fff}
+.nav svg{flex:0 0 auto}
+.side .me{margin-top:auto;font-size:12px;color:var(--side-mut);padding:8px 12px;border-top:1px solid var(--side2)}
+.side .me b{color:#fff;display:block;font-size:13px}
+main{flex:1;min-width:0;padding:26px 32px 40px;max-width:1180px}
+.tabs{display:none}
+h1{margin:0;font-size:24px;font-weight:700}
+.head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.eyebrow{font-size:12px;font-weight:700;color:var(--pink);letter-spacing:.06em}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px 18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px}
+.kpi .l{font-size:13px;color:var(--muted)}.kpi .v{font-size:28px;font-weight:800;line-height:1.2;font-variant-numeric:tabular-nums}.kpi .d{font-size:12px;color:var(--muted);font-weight:600}
+.row2{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.row2>.card{flex:1 1 320px;min-width:0}
+.chart{display:flex;align-items:flex-end;gap:4px;height:150px;margin-top:10px}
+.chart .c{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:3px;min-width:0;height:100%}
+.chart .c i{width:100%;max-width:40px;border-radius:6px 6px 2px 2px;background:#9CC5EE;min-height:2px}
+.chart .c:last-child i{background:var(--pink)}
+.chart .c span{font-size:10px;color:var(--muted);white-space:nowrap}
+.hb{display:flex;align-items:center;gap:10px;font-size:13px;margin-top:9px}
+.hb span:first-child{width:140px;flex:0 0 auto;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hb .t{flex:1;height:8px;border-radius:8px;background:var(--soft);overflow:hidden}.hb .t i{display:block;height:100%;background:var(--sky);border-radius:8px}
+.hb b{width:40px;text-align:right;font-weight:600}
+.seg{display:flex;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{font-size:13px;font-weight:600;padding:6px 12px;border-radius:9px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.btn{height:44px;padding:0 18px;border-radius:14px;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:8px;background:var(--card);border:1px solid var(--line)}
+.btn.pri{background:var(--btn);border-color:var(--btn);color:#fff}
+.btn.red{background:var(--bad-soft);border-color:var(--bad-soft);color:var(--bad)}
+.btn.sm{height:36px;padding:0 12px;border-radius:11px;font-size:13px}
+.btn:disabled{opacity:.5;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:13px;font-weight:600;padding:7px 13px;border-radius:999px;background:var(--card);border:1px solid var(--line)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip small{opacity:.7;font-weight:500;margin-left:3px}
+.search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:0 14px;height:44px;flex:1 1 240px;max-width:380px}
+.search input{border:0;outline:0;background:none;flex:1;min-width:0}
+.list{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-top:12px}
+.urow{display:flex;align-items:center;gap:12px;padding:11px 16px;border-top:1px solid var(--soft);width:100%;text-align:left}
+.urow:first-child{border-top:0}
+.urow:hover{background:#FAFCFE}
+.av{width:40px;height:40px;flex:0 0 auto;border-radius:50%;display:grid;place-items:center;font-weight:700;background:var(--sky-soft);color:var(--sky-ink);overflow:hidden}
+.av img{width:100%;height:100%;object-fit:cover}
+.urow .m{flex:1;min-width:0}.urow .m b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.urow .m span{font-size:12px;color:var(--muted);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.urow .pts{font-weight:700;font-variant-numeric:tabular-nums;width:60px;text-align:right}
+.pill{font-size:11px;font-weight:700;padding:3px 9px;border-radius:7px;white-space:nowrap}
+.p-ok{background:var(--ok-soft);color:var(--ok)}.p-mut{background:var(--soft);color:var(--muted)}.p-bad{background:var(--bad-soft);color:var(--bad)}.p-run{background:var(--sky-soft);color:var(--sky-ink)}.p-sun{background:var(--sun-soft);color:var(--sun-ink)}
+.empty{padding:28px;text-align:center;color:var(--muted)}
+.lbl{font-size:13px;font-weight:700;color:var(--muted);margin:16px 0 8px}
+.types{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.type{height:66px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:12px;font-weight:600}
+.type b{font-size:18px;line-height:1}
+.type[aria-pressed="true"]{background:var(--sky-soft);border-color:var(--sky);color:var(--sky-ink)}
+textarea,.inp,select{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+textarea{min-height:110px;resize:vertical}
+.drop{border:1.5px dashed #C9D6E8;border-radius:14px;padding:16px;text-align:center;color:var(--muted);background:var(--bg);font-size:13px}
+.drop b{color:var(--ink)}
+.hint{font-size:12px;color:var(--muted)}
+.cols{display:flex;flex-wrap:wrap;gap:18px;align-items:flex-start}
+.cols>.a{flex:3 1 420px;min-width:0}.cols>.b{flex:2 1 280px;min-width:0;position:sticky;top:20px}
+.phone{background:#DCE8F6;border-radius:16px;padding:16px;display:flex;flex-direction:column;gap:8px;align-items:flex-start;min-height:120px}
+.bub{background:#fff;border-radius:14px 14px 14px 4px;padding:9px 12px;font-size:13px;white-space:pre-wrap;max-width:92%;word-break:break-word}
+.media{background:var(--ink);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:600}
+.confirm{background:var(--bad-soft);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px;margin-top:10px}
+.confirm.blue{background:var(--sky-soft)}
+.confirm div{display:flex;gap:8px;flex-wrap:wrap}
+.toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;z-index:50;max-width:calc(100% - 32px);text-align:center}
+.toast.err{background:var(--bad)}
+.modal-bg{position:fixed;inset:0;background:rgba(28,42,68,.45);z-index:40;display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+.modal{background:var(--bg);border-radius:22px;width:100%;max-width:560px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.kv{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.kv div{display:flex;justify-content:space-between;gap:12px;padding:9px 14px;border-top:1px solid var(--soft);font-size:13px}
+.kv div:first-child{border-top:0}.kv span{color:var(--muted)}.kv b{font-weight:600;text-align:right}
+.mini{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.mini div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px;text-align:center}
+.mini b{display:block;font-size:20px}.mini span{font-size:11px;color:var(--muted)}
+.bc{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--soft)}
+.bc:first-child{border-top:0}
+.bc .m{flex:1;min-width:0}.bc .m b{display:block;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.bc .m span{font-size:12px;color:var(--muted)}
+.prog{height:6px;border-radius:6px;background:var(--soft);overflow:hidden;margin-top:4px}.prog i{display:block;height:100%;background:var(--sky)}
+.fcard{display:flex;flex-direction:column;gap:8px}
+.fcard .top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.fcard .top b{font-size:15px}
+.step{display:flex;gap:10px;align-items:center;font-size:13px}
+.step .t{width:70px;flex:0 0 auto;text-align:right;color:var(--muted);font-weight:600;font-size:12px}
+.step .k{width:30px;height:30px;flex:0 0 auto;border-radius:9px;display:grid;place-items:center;background:var(--soft);font-size:13px;font-weight:700}
+.step .x{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.sbox .h{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.delay{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.delay .inp{width:90px}.delay select{width:auto}
+.toggle{display:inline-flex;align-items:center;gap:8px;font-weight:600}
+.toggle input{width:20px;height:20px;accent-color:var(--btn)}
+.srow{display:flex;align-items:center;gap:12px;padding:12px 16px;border-top:1px solid var(--soft);flex-wrap:wrap}
+.srow:first-child{border-top:0}
+.srow .m{flex:1 1 160px;min-width:0}.srow .m b{display:block}.srow .m span{font-size:12px;color:var(--muted)}
+.srow select{width:auto}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;align-items:end}
+.form label{font-size:12px;font-weight:600;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+.login{min-height:100vh;display:grid;place-items:center;padding:20px}
+.login form{width:100%;max-width:380px;background:#fff;border:1px solid var(--line);border-radius:24px;padding:28px 24px;display:flex;flex-direction:column;gap:14px}
+.login label{font-size:13px;font-weight:600;display:flex;flex-direction:column;gap:6px}
+.err{color:var(--bad);font-size:13px;font-weight:600}
+@media (max-width:860px){
+  .side{display:none}
+  main{padding:18px 16px 96px}
+  .tabs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid var(--line);height:calc(64px + env(safe-area-inset-bottom,0px));padding-bottom:env(safe-area-inset-bottom,0px);z-index:30}
+  .tabs button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-size:10px;font-weight:600;color:var(--muted)}
+  .tabs button span{width:42px;height:26px;border-radius:999px;display:grid;place-items:center}
+  .tabs button[aria-current="true"]{color:var(--ink)}
+  .tabs button[aria-current="true"] span{background:var(--sky-soft);color:var(--sky-ink)}
+  .cols>.b{position:static}
+  .urow .pts{display:none}
+  .hb span:first-child{width:110px}
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div class="toast hide" id="toast"></div>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const fmt=n=>Number(n||0).toLocaleString("ru-RU").replace(/,/g," ");
+const ago=d=>{if(!d)return"hech qachon";const m=(Date.now()-new Date(d))/6e4;if(m<2)return"hozirgina";if(m<60)return Math.round(m)+" daqiqa oldin";if(m<1440)return Math.round(m/60)+" soat oldin";return Math.round(m/1440)+" kun oldin"};
+let tT;function toast(m,err){const t=$("#toast");t.textContent=m;t.className="toast"+(err?" err":"");clearTimeout(tT);tT=setTimeout(()=>t.className="toast hide",2800)}
+async function api(path,o={}){
+  const r=await fetch(path,{method:o.method||(o.body||o.form?"POST":"GET"),headers:o.form?{}:{"Content-Type":"application/json"},body:o.form||(o.body?JSON.stringify(o.body):undefined),credentials:"same-origin"});
+  let d={};try{d=await r.json()}catch(e){}
+  if(r.status===401&&!path.endsWith("/login")){ME=null;renderLogin();throw new Error("auth")}
+  if(!r.ok)throw new Error(d.error||"Xato yuz berdi");
+  return d;
+}
+const IC={
+ stat:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+ users:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M17 11a3 3 0 1 0 0-6M22 21a6 6 0 0 0-4-5.6"/></svg>',
+ send:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4z"/></svg>',
+ fun:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>',
+ set:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>',
+ search:'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5D6B85" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>'
+};
+const ROLES={viewer:"Kuzatuvchi",editor:"Muharrir",admin:"Admin"};
+const ROLE_D={viewer:"Faqat ko'radi: statistika, o'quvchilar",editor:"Ko'radi + xabar yuboradi, voronkalarni sozlaydi",admin:"Hamma narsa: bloklash, dostup, xodimlar"};
+const LV={viewer:1,editor:2,admin:3};
+const can=r=>ME&&LV[ME.role]>=LV[r];
+const KIND={text:{l:"Matn",i:"Aa"},photo:{l:"Rasm",i:"▣"},video_note:{l:"Dumaloq video",i:"●"},voice:{l:"Ovozli",i:"♪"}};
+let ME=null,PAGE="stats",ADMIN_CHAT=true;
+
+/* ---------- Login ---------- */
+function renderLogin(){
+  $("#root").innerHTML=`<div class="login"><form id="lf">
+    <div style="width:52px;height:52px;border-radius:16px;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:20px">한</div>
+    <div><div class="eyebrow">ADMIN</div><h1>Adminkaga kirish</h1></div>
+    <label>Login<input class="inp" id="lg" autocomplete="username" required></label>
+    <label>Parol<input class="inp" id="pw" type="password" autocomplete="current-password" required></label>
+    <div class="err" id="le"></div>
+    <button class="btn pri" type="submit">Kirish</button></form></div>`;
+  $("#lf").onsubmit=async e=>{e.preventDefault();$("#le").textContent="";
+    try{const d=await api("/admin/api/login",{body:{login:$("#lg").value,password:$("#pw").value}});ME=d.me;boot()}catch(err){$("#le").textContent=err.message}};
+}
+
+/* ---------- Shell ---------- */
+const NAV=[["stats","Statistika",IC.stat,"viewer"],["users","O'quvchilar",IC.users,"viewer"],["send","Xabarlar",IC.send,"editor"],["funnels","Voronkalar",IC.fun,"editor"],["settings","Sozlamalar",IC.set,"viewer"]];
+function shell(){
+  const nav=NAV.filter(n=>can(n[3]));
+  $("#root").innerHTML=`<div class="layout"><aside class="side"><div class="brand"><i>한</i><span><b>Koreys tili 200</b><span>Adminka</span></span></div>
+    ${nav.map(n=>`<button class="nav" data-p="${n[0]}" aria-current="${PAGE===n[0]}">${n[2]}${n[1]}</button>`).join("")}
+    <div class="me"><b>${esc(ME.login)}</b>${ROLES[ME.role]}</div></aside>
+    <main id="main"></main>
+    <nav class="tabs">${nav.map(n=>`<button data-p="${n[0]}" aria-current="${PAGE===n[0]}"><span>${n[2]}</span>${n[1]}</button>`).join("")}</nav></div>`;
+  $$("[data-p]").forEach(b=>b.onclick=()=>go(b.dataset.p));
+}
+let timers=[];
+function go(p){PAGE=p;timers.forEach(clearInterval);timers=[];try{localStorage.setItem("adm-page",p)}catch(e){}shell();({stats:pStats,users:pUsers,send:pSend,funnels:pFunnels,settings:pSettings})[p]();window.scrollTo(0,0)}
+const head=(t,right="")=>`<div class="head"><div><div class="eyebrow">ADMIN</div><h1>${t}</h1></div>${right}</div>`;
+
+/* ---------- Statistika ---------- */
+let DAYS=7;
+async function pStats(){
+  const m=$("#main");m.innerHTML=head("Statistika")+`<div class="empty">Yuklanmoqda…</div>`;
+  let d;try{d=await api("/admin/api/stats?days="+DAYS)}catch(e){return}
+  const k=d.kpi,mx=Math.max(1,...d.daily.map(x=>x.n)),gm=Math.max(1,...d.goals.map(x=>x.n));
+  const W=["Ya","Du","Se","Ch","Pa","Ju","Sh"];
+  m.innerHTML=head("Statistika",`<div class="seg">${[7,30].map(n=>`<button data-d="${n}" aria-pressed="${DAYS===n}">${n} kun</button>`).join("")}</div>`)+`
+  <div class="grid">
+    ${[["Jami o'quvchilar",k.total,`+${fmt(k.new_period)} so'nggi ${DAYS} kunda`],["Faol (7 kun)",k.active7,k.total?Math.round(k.active7/k.total*100)+"% jami":""],["Bugun kirganlar",k.today,""],["So'rovnoma to'ldirgan",k.onboarded,k.total?Math.round(k.onboarded/k.total*100)+"% jami":""],["Bloklangan",k.blocked,`botni to'xtatgan: ${fmt(k.stopped)}`],["O'rganilgan so'zlar",d.learned.fel+d.learned.ibora,`fe'l ${fmt(d.learned.fel)} · ibora ${fmt(d.learned.ibora)}`]]
+      .map(x=>`<div class="card kpi"><div class="l">${x[0]}</div><div class="v">${fmt(x[1])}</div><div class="d">${x[2]}</div></div>`).join("")}
+  </div>
+  <div class="row2">
+    <div class="card" style="flex:2 1 380px"><b>Yangi o'quvchilar</b>
+      <div class="chart">${d.daily.map((x,i)=>{const dt=new Date(x.day+"T00:00:00");const lab=DAYS<=7?W[dt.getDay()]:(i%5===0||i===d.daily.length-1?dt.getDate()+"":"");
+        return `<div class="c" title="${x.day}: ${x.n}">${DAYS<=7?`<span>${x.n}</span>`:""}<i style="height:${Math.round(x.n/mx*110)}px"></i><span>${lab}&nbsp;</span></div>`}).join("")}</div></div>
+    <div class="card"><b>Maqsad bo'yicha</b>${d.goals.map(g=>`<div class="hb"><span title="${esc(g.goal)}">${esc(g.goal)}</span><span class="t"><i style="width:${g.n/gm*100}%"></i></span><b>${fmt(g.n)}</b></div>`).join("")||`<div class="empty">Hali ma'lumot yo'q</div>`}</div>
+  </div>`;
+  $$("[data-d]").forEach(b=>b.onclick=()=>{DAYS=+b.dataset.d;pStats()});
+}
+
+/* ---------- O'quvchilar ---------- */
+let UQ="",UF="",UOFF=0,ULIST=[];
+async function pUsers(more){
+  const m=$("#main");
+  if(!more){UOFF=0;ULIST=[];
+    m.innerHTML=head("O'quvchilar <span id='ut' style='font-size:15px;color:var(--muted);font-weight:500'></span>")+`
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><label class="search">${IC.search}<input id="uq" placeholder="Ism, @username yoki ID" value="${esc(UQ)}"></label>
+    <div class="chips">${[["","Hammasi"],["active","Faol"],["inactive","Nofaol"],["blocked","Bloklangan"],["stopped","Botni to'xtatgan"]].map(c=>`<button class="chip" data-f="${c[0]}" aria-pressed="${UF===c[0]}">${c[1]}</button>`).join("")}</div></div>
+    <div class="list" id="ul"><div class="empty">Yuklanmoqda…</div></div><div id="umore" style="text-align:center;margin-top:12px"></div>`;
+    let t;$("#uq").oninput=e=>{clearTimeout(t);t=setTimeout(()=>{UQ=e.target.value;pUsers()},300)};
+    $$("[data-f]").forEach(b=>b.onclick=()=>{UF=b.dataset.f;pUsers()});
+  }
+  let d;try{d=await api(`/admin/api/users?q=${encodeURIComponent(UQ)}&f=${UF}&offset=${UOFF}`)}catch(e){return}
+  ULIST=ULIST.concat(d.users);UOFF+=d.users.length;
+  $("#ut").textContent=fmt(d.total);
+  $("#ul").innerHTML=ULIST.length?ULIST.map(uRow).join(""):`<div class="empty">Hech kim topilmadi</div>`;
+  $("#umore").innerHTML=UOFF<d.total?`<button class="btn sm" id="um">Yana yuklash</button>`:"";
+  $("#um")&&($("#um").onclick=()=>pUsers(true));
+  $$("[data-u]").forEach(b=>b.onclick=()=>openUser(b.dataset.u));
+}
+function status(u){if(u.blocked)return["Bloklangan","p-bad"];if(!u.access)return["Dostup yopiq","p-bad"];if(u.bot_stopped)return["Botni to'xtatgan","p-mut"];
+  if(u.last_seen&&Date.now()-new Date(u.last_seen)<7*864e5)return["Faol","p-ok"];return["Nofaol","p-mut"]}
+const avatar=u=>`<span class="av">${u.photo_url?`<img src="${esc(u.photo_url)}" alt="">`:esc((u.first_name||"?")[0])}</span>`;
+const fullName=u=>[u.first_name,u.last_name].filter(Boolean).join(" ")||"Ismsiz";
+function uRow(u){const s=status(u);
+  return `<button class="urow" data-u="${u.id}">${avatar(u)}<span class="m"><b>${esc(fullName(u))}</b><span>${[u.username?"@"+u.username:"",u.goal,(u.learned_fel+u.learned_ibora)+" so'z",ago(u.last_seen)].filter(Boolean).map(esc).join(" · ")}</span></span><span class="pts">${fmt(u.points_total)}</span><span class="pill ${s[1]}">${s[0]}</span></button>`}
+
+async function openUser(id,keepMsg){
+  let d;try{d=await api("/admin/api/users/"+id)}catch(e){return}
+  const u=d.user,s=status(u);
+  const bg=document.createElement("div");bg.className="modal-bg";
+  bg.innerHTML=`<div class="modal" role="dialog" aria-modal="true">
+    <div style="display:flex;align-items:center;gap:12px">${avatar(u).replace('class="av"','class="av" style="width:56px;height:56px;font-size:22px"')}
+      <div style="flex:1;min-width:0"><b style="font-size:18px;display:block">${esc(fullName(u))}</b><span class="hint">${u.username?"@"+esc(u.username)+" · ":""}ID ${u.id} · ${new Date(u.joined_at).toLocaleDateString("ru-RU")} qo'shilgan</span></div>
+      <span class="pill ${s[1]}">${s[0]}</span><button class="btn sm" data-x aria-label="Yopish">✕</button></div>
+    <div class="mini"><div><b>${u.learned_fel+u.learned_ibora}</b><span>so'z</span></div><div><b>${fmt(u.points_total)}</b><span>ball</span></div><div><b>${d.rank}-o'rin</b><span>reyting</span></div></div>
+    <div class="kv">${[["Yosh",u.age],["Maqsad",u.goal],["Daraja",u.lvl],["Qiyinchilik",u.prob],["Fe'llar / iboralar",`${u.learned_fel} / ${u.learned_ibora}`],["Ketma-ket kunlar",u.streak],["Oxirgi kirish",ago(u.last_seen)]].map(x=>`<div><span>${x[0]}</span><b>${esc(x[1]??"—")||"—"}</b></div>`).join("")}</div>
+    ${can("editor")?`<div class="lbl" style="margin:4px 0 0">Shaxsiy xabar</div><div id="um-c"></div><button class="btn pri" id="um-s">Yuborish</button>`:""}
+    ${can("admin")?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px">
+      <button class="btn" id="u-acc">${u.access?"Dostupni yopish":"Dostup berish"}</button>
+      <button class="btn ${u.blocked?"":"red"}" id="u-blk">${u.blocked?"Blokdan chiqarish":"Bloklash"}</button></div>
+      <div class="hint">Dostup yopilsa platforma ochilmaydi, lekin bot xabarlari keladi. Bloklansa bot umuman javob bermaydi va xabarlar yuborilmaydi.</div>`:""}
+  </div>`;
+  document.body.appendChild(bg);
+  const close=()=>bg.remove();
+  bg.onclick=e=>{if(e.target===bg)close()};bg.querySelector("[data-x]").onclick=close;
+  if(can("editor")){const msg={kind:"text",text:""};composer(bg.querySelector("#um-c"),msg,{small:1});
+    bg.querySelector("#um-s").onclick=async()=>{try{await api(`/admin/api/users/${u.id}/message`,{body:msg});toast("Xabar yuborildi");close()}catch(e){toast(e.message,1)}}}
+  if(can("admin")){
+    bg.querySelector("#u-acc").onclick=async()=>{await api("/admin/api/users/"+u.id,{method:"PATCH",body:{access:!u.access}});toast(u.access?"Dostup yopildi":"Dostup berildi");close();refreshUser(u.id)};
+    bg.querySelector("#u-blk").onclick=async()=>{await api("/admin/api/users/"+u.id,{method:"PATCH",body:{blocked:!u.blocked}});toast(u.blocked?"Blokdan chiqarildi":"Bloklandi");close();refreshUser(u.id)};
+  }
+}
+function refreshUser(){if(PAGE==="users")pUsers()}
+
+/* ---------- Composer (matn / rasm / dumaloq video / ovozli) ---------- */
+function composer(el,m,opt={}){
+  const acc={photo:"image/*",video_note:"video/mp4,video/*",voice:"audio/ogg,audio/*,.ogg,.oga,.opus",video:"video/*"};
+  const tip={photo:"JPG yoki PNG, 10 MB gacha",video_note:"Kvadrat video (1:1), 1 daqiqagacha, MP4",voice:"Telegram'dan saqlangan ovozli xabar (.ogg). Telefonda ovoz yozib, o'zingizga yuborib, yuklab oling",video:"MP4"};
+  const draw=()=>{
+    el.innerHTML=`<div class="types">${Object.entries(KIND).map(([k,v])=>`<button type="button" class="type" data-k="${k}" aria-pressed="${m.kind===k}"><b>${v.i}</b>${v.l}</button>`).join("")}</div>
+      ${m.kind!=="text"?`<div class="drop" style="margin-top:10px">${m.file_id?`<b>✓ ${esc(m.fname||"Fayl yuklandi")}</b> · <button type="button" style="color:var(--bad);font-weight:600" data-rm>O'chirish</button>`
+        :m.busy?`<b>Yuklanmoqda…</b>`:`<label style="cursor:pointer"><b style="color:var(--btn)">Faylni tanlang</b><input type="file" accept="${acc[m.kind]}" hidden data-file></label><div class="hint" style="margin-top:4px">${tip[m.kind]}</div>`}</div>`:""}
+      <textarea style="margin-top:10px" data-t placeholder="${m.kind==="text"?"Xabar matni":"Izoh (ixtiyoriy)"}">${esc(m.text||"")}</textarea>
+      <div class="hint">{ism} deb yozsangiz, o'rniga har kimning o'z ismi qo'yiladi</div>`;
+    el.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{if(m.kind!==b.dataset.k){m.kind=b.dataset.k;m.file_id=null;m.fname=null}draw();opt.onChange&&opt.onChange()});
+    el.querySelector("[data-t]").oninput=e=>{m.text=e.target.value;opt.onChange&&opt.onChange()};
+    const rm=el.querySelector("[data-rm]");rm&&(rm.onclick=()=>{m.file_id=null;m.fname=null;draw();opt.onChange&&opt.onChange()});
+    const fi=el.querySelector("[data-file]");fi&&(fi.onchange=async()=>{const f=fi.files[0];if(!f)return;
+      if(!ADMIN_CHAT){toast("Avval Railway'da ADMIN_CHAT_ID qo'shing",1);return}
+      m.busy=1;draw();const fd=new FormData();fd.append("kind",m.kind);fd.append("file",f);
+      try{const d=await api("/admin/api/media",{form:fd});m.file_id=d.file_id;m.fname=f.name;toast("Fayl yuklandi")}catch(e){toast(e.message,1)}
+      m.busy=0;draw();opt.onChange&&opt.onChange()});
+  };draw();
+}
+function preview(m){
+  const t=esc((m.text||"").replace(/\{ism\}/g,"Dilnoza"));
+  let media="";
+  if(m.kind==="photo")media=`<div class="media" style="width:220px;height:150px;border-radius:12px">${m.file_id?"Rasm":"Rasm yo'q"}</div>`;
+  if(m.kind==="video_note")media=`<div class="media" style="width:150px;height:150px;border-radius:50%">${m.file_id?"▶ Dumaloq video":"Video yo'q"}</div>`;
+  if(m.kind==="voice")media=`<div class="bub" style="display:flex;align-items:center;gap:8px"><span style="width:30px;height:30px;border-radius:50%;background:var(--btn);color:#fff;display:grid;place-items:center">▶</span>${m.file_id?"Ovozli xabar":"Fayl yo'q"}</div>`;
+  return `<div class="phone">${media}${t?`<div class="bub">${t}</div>`:m.kind==="text"?`<div class="hint">Matn yozing</div>`:""}</div>`;
+}
+
+/* ---------- Xabar yuborish ---------- */
+const SM={kind:"text",text:"",segment:"all"};
+async function pSend(){
+  const m=$("#main");m.innerHTML=head("Xabar yuborish")+`<div class="empty">Yuklanmoqda…</div>`;
+  let sg;try{sg=(await api("/admin/api/segments")).segments}catch(e){return}
+  m.innerHTML=head("Xabar yuborish")+`<div class="cols"><div class="a">
+    <div class="card"><b>1. Kimga</b><div class="chips" style="margin-top:10px">${sg.map(s=>`<button class="chip" data-s="${s.id}" aria-pressed="${SM.segment===s.id}">${esc(s.label)}<small>${fmt(s.n)}</small></button>`).join("")}</div></div>
+    <div class="card" style="margin-top:12px"><b>2. Xabar</b><div id="cmp" style="margin-top:10px"></div></div></div>
+    <div class="b"><div class="card"><b>Ko'rinishi</b><div id="pv" style="margin-top:10px"></div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px"><button class="btn" id="tst">Avval menga sinov</button><button class="btn pri" id="go"></button></div><div id="cf"></div></div></div></div>
+    <div class="lbl" style="margin-top:22px">Yuborilganlar</div><div class="list" id="hist"><div class="empty">Yuklanmoqda…</div></div>`;
+  const cnt=()=>(sg.find(s=>s.id===SM.segment)||{n:0}).n;
+  const upd=()=>{$("#pv").innerHTML=preview(SM);$("#go").textContent=fmt(cnt())+" kishiga yuborish";$("#cf").innerHTML=""};
+  composer($("#cmp"),SM,{onChange:upd});upd();
+  $$("[data-s]").forEach(b=>b.onclick=()=>{SM.segment=b.dataset.s;$$("[data-s]").forEach(x=>x.setAttribute("aria-pressed",x===b));upd()});
+  $("#tst").onclick=async()=>{try{await api("/admin/api/test",{body:SM});toast("Sinov xabari sizga yuborildi")}catch(e){toast(e.message,1)}};
+  $("#go").onclick=()=>{
+    if(SM.kind==="text"&&!SM.text.trim())return toast("Matn yozing",1);
+    if(SM.kind!=="text"&&!SM.file_id)return toast("Faylni yuklang",1);
+    $("#cf").innerHTML=`<div class="confirm blue"><b>${fmt(cnt())} kishiga yuborilsinmi? Buni bekor qilib bo'lmaydi.</b><div><button class="btn sm" id="cn">Bekor qilish</button><button class="btn sm pri" id="cy">Ha, yuborish</button></div></div>`;
+    $("#cn").onclick=()=>$("#cf").innerHTML="";
+    $("#cy").onclick=async()=>{try{await api("/admin/api/broadcasts",{body:SM});toast("Yuborish boshlandi");Object.assign(SM,{kind:"text",text:"",file_id:null,fname:null});pSend()}catch(e){toast(e.message,1)}};
+  };
+  const hist=async()=>{let d;try{d=(await api("/admin/api/broadcasts")).broadcasts}catch(e){return}
+    const lab=Object.fromEntries(sg.map(s=>[s.id,s.label]));
+    $("#hist").innerHTML=d.length?d.map(b=>{const st={queued:["Navbatda","p-sun"],running:["Yuborilmoqda","p-run"],done:["Tugadi","p-ok"],stopped:["To'xtatildi","p-mut"]}[b.status]||[b.status,"p-mut"];
+      const pc=b.total?Math.round((b.sent+b.failed)/b.total*100):0;
+      return `<div class="bc"><span class="step"><span class="k">${KIND[b.kind]?KIND[b.kind].i:"?"}</span></span><span class="m"><b>${esc(b.text||KIND[b.kind]?.l||"")}</b>
+        <span>${esc(lab[b.segment]||b.segment)} · ${new Date(b.created_at).toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"})} · ${esc(b.created_by||"")} · yetdi ${fmt(b.sent)} / ${fmt(b.total)}${b.failed?` · yetmadi ${fmt(b.failed)}`:""}</span>
+        ${b.status==="running"?`<div class="prog"><i style="width:${pc}%"></i></div>`:""}</span>
+        <span class="pill ${st[1]}">${st[0]}</span>${b.status==="running"||b.status==="queued"?`<button class="btn sm" data-stop="${b.id}">To'xtatish</button>`:""}</div>`}).join(""):`<div class="empty">Hali xabar yuborilmagan</div>`;
+    $$("[data-stop]").forEach(x=>x.onclick=async()=>{await api(`/admin/api/broadcasts/${x.dataset.stop}/stop`,{method:"POST"});hist()});
+  };
+  hist();timers.push(setInterval(hist,4000));
+}
+
+/* ---------- Voronkalar ---------- */
+let SEGS=null;
+const delayTxt=m=>m===0?"Darhol":m%1440===0?m/1440+"-kun":m%60===0?m/60+" soat":m+" daq";
+async function pFunnels(){
+  const m=$("#main");m.innerHTML=head("Voronkalar")+`<div class="empty">Yuklanmoqda…</div>`;
+  let d;try{d=await api("/admin/api/funnels");SEGS=SEGS||(await api("/admin/api/segments")).segments}catch(e){return}
+  const lab=Object.fromEntries(SEGS.map(s=>[s.id,s.label]));
+  m.innerHTML=head("Voronkalar",`<button class="btn pri" id="nf">+ Yangi voronka</button>`)+`
+    <div class="hint" style="margin:-8px 0 14px">Voronka: yangi o'quvchiga belgilangan vaqtlarda avtomatik ketma-ket xabarlar. Har bir o'quvchi voronkadan bir marta o'tadi.</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">${d.funnels.map(f=>`<div class="card fcard">
+      <div class="top"><b>${esc(f.name)}</b><span class="pill ${f.enabled?"p-ok":"p-mut"}">${f.enabled?"Yoqilgan":"O'chiq"}</span></div>
+      <div class="hint">${f.trigger==="start"?"/start bosilganda":"So'rovnomani tugatganda"} · ${esc(lab[f.segment]||"Hammasi")} · kirgan ${fmt(f.entered)} · tugatgan ${fmt(f.finished)}</div>
+      ${f.steps.map(s=>`<div class="step"><span class="t">${delayTxt(s.delay_minutes)}</span><span class="k">${KIND[s.kind]?.i||"?"}</span><span class="x">${esc(s.text||KIND[s.kind]?.l)}</span></div>`).join("")||`<div class="hint">Qadamlar yo'q</div>`}
+      <button class="btn sm" data-e="${f.id}" style="align-self:flex-start;margin-top:4px">Tahrirlash</button></div>`).join("")||`<div class="card empty">Hali voronka yo'q. «Yangi voronka» tugmasini bosing.</div>`}</div>`;
+  $("#nf").onclick=()=>editFunnel({name:"",trigger:"onboard",segment:"all",enabled:false,steps:[{delay_minutes:0,kind:"text",text:""}]});
+  $$("[data-e]").forEach(b=>b.onclick=()=>editFunnel(JSON.parse(JSON.stringify(d.funnels.find(f=>f.id==b.dataset.e)))));
+}
+function editFunnel(f){
+  timers.forEach(clearInterval);timers=[];
+  const m=$("#main");
+  const UNITS=[[1,"daqiqa"],[60,"soat"],[1440,"kun"]];
+  const unitOf=x=>x&&x%1440===0?1440:x&&x%60===0?60:x?1:1440;
+  const draw=()=>{
+    m.innerHTML=head(f.id?"Voronkani tahrirlash":"Yangi voronka",`<button class="btn" id="bk">← Orqaga</button>`)+`
+    <div class="card"><div class="form">
+      <label>Nomi<input class="inp" id="fn" value="${esc(f.name)}" placeholder="Masalan: Yangi kelganlar"></label>
+      <label>Qachon boshlanadi<select id="ft"><option value="onboard" ${f.trigger==="onboard"?"selected":""}>So'rovnomani tugatganda</option><option value="start" ${f.trigger==="start"?"selected":""}>Botga /start bosganda</option></select></label>
+      <label>Kimlar uchun<select id="fs">${SEGS.filter(s=>!["active","inactive","new"].includes(s.id)).map(s=>`<option value="${s.id}" ${f.segment===s.id?"selected":""}>${esc(s.label)}</option>`).join("")}</select></label>
+      <label class="toggle" style="flex-direction:row;color:var(--ink);font-size:14px"><input type="checkbox" id="fe" ${f.enabled?"checked":""}> Yoqilgan</label></div></div>
+    <div class="lbl">Qadamlar</div>
+    <div style="display:flex;flex-direction:column;gap:12px">${f.steps.map((s,i)=>{const u=unitOf(s.delay_minutes);return `<div class="sbox">
+      <div class="h"><b>${i+1}-qadam</b><div class="delay"><span class="hint">Boshlangandan</span><input class="inp" type="number" min="0" data-dv="${i}" value="${s.delay_minutes/u}"><select data-du="${i}">${UNITS.map(x=>`<option value="${x[0]}" ${x[0]===u?"selected":""}>${x[1]}</option>`).join("")}</select><span class="hint">keyin</span>
+        <button class="btn sm red" data-del="${i}">O'chirish</button></div></div><div data-c="${i}"></div></div>`}).join("")}</div>
+    <button class="btn" id="as" style="margin-top:12px">+ Qadam qo'shish</button>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:20px"><button class="btn pri" id="sv">Saqlash</button>${f.id?`<button class="btn red" id="dl">Voronkani o'chirish</button>`:""}</div><div id="dc"></div>`;
+    f.steps.forEach((s,i)=>composer(m.querySelector(`[data-c="${i}"]`),s));
+    const sync=()=>{f.name=$("#fn").value;f.trigger=$("#ft").value;f.segment=$("#fs").value;f.enabled=$("#fe").checked;
+      f.steps.forEach((s,i)=>{s.delay_minutes=Math.max(0,Math.round((parseFloat(m.querySelector(`[data-dv="${i}"]`).value)||0)*(+m.querySelector(`[data-du="${i}"]`).value)))})};
+    $("#bk").onclick=()=>pFunnels();
+    $("#as").onclick=()=>{sync();const last=f.steps[f.steps.length-1];f.steps.push({delay_minutes:(last?last.delay_minutes:0)+1440,kind:"text",text:""});draw()};
+    $$("[data-del]").forEach(b=>b.onclick=()=>{sync();f.steps.splice(+b.dataset.del,1);draw()});
+    $("#sv").onclick=async()=>{sync();try{await api("/admin/api/funnels",{body:f});toast("Saqlandi");pFunnels()}catch(e){toast(e.message,1)}};
+    $("#dl")&&($("#dl").onclick=()=>{$("#dc").innerHTML=`<div class="confirm"><b>Voronka va uning statistikasi o'chiriladi.</b><div><button class="btn sm" id="dn">Bekor qilish</button><button class="btn sm red" id="dy">Ha, o'chirish</button></div></div>`;
+      $("#dn").onclick=()=>$("#dc").innerHTML="";$("#dy").onclick=async()=>{await api("/admin/api/funnels/"+f.id,{method:"DELETE"});toast("O'chirildi");pFunnels()}});
+  };draw();
+}
+
+/* ---------- Sozlamalar ---------- */
+async function pSettings(){
+  const m=$("#main");
+  m.innerHTML=head("Sozlamalar")+`<div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+    <div><b style="font-size:16px">${esc(ME.login)}</b><div class="hint">${ROLES[ME.role]} · ${ROLE_D[ME.role]}</div></div><button class="btn" id="lo">Chiqish</button></div>
+    <div id="stf"></div>`;
+  $("#lo").onclick=async()=>{await api("/admin/api/logout",{method:"POST"});ME=null;renderLogin()};
+  if(!can("admin"))return;
+  const load=async()=>{
+    let d;try{d=await api("/admin/api/staff")}catch(e){return}
+    $("#stf").innerHTML=`<div class="lbl" style="margin-top:22px">Xodimlar va ruxsatlar</div>
+    <div class="card" style="padding:0;overflow:hidden">${d.staff.map(s=>{const own=s.login===d.owner,me=s.login===ME.login;return `<div class="srow">
+      <span class="av">${esc(s.login[0].toUpperCase())}</span><span class="m"><b>${esc(s.login)}${me?" (siz)":""}</b><span>${own?"Egasi · paroli Railway'da":ROLE_D[s.role]}</span></span>
+      ${own?`<span class="pill p-sun">Admin</span>`:`<select data-r="${s.id}">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}" ${s.role===k?"selected":""}>${v}</option>`).join("")}</select>
+      <button class="btn sm" data-pw="${s.id}">Parol</button>${me?"":`<button class="btn sm red" data-rm="${s.id}">O'chirish</button>`}`}</div>`}).join("")}</div>
+    <div class="lbl" style="margin-top:22px">Yangi xodim qo'shish</div>
+    <div class="card"><div class="form">
+      <label>Login<input class="inp" id="nl" placeholder="masalan: kurator1" autocomplete="off"></label>
+      <label>Parol<input class="inp" id="np" placeholder="kamida 6 belgi" autocomplete="new-password"></label>
+      <label>Rol<select id="nr">${Object.entries(ROLES).map(([k,v])=>`<option value="${k}">${v}</option>`).join("")}</select></label>
+      <button class="btn pri" id="na">Qo'shish</button></div>
+      <div class="hint" style="margin-top:10px">Kuzatuvchi: faqat ko'radi. Muharrir: xabar yuboradi va voronkalarni sozlaydi. Admin: hammasi, shu jumladan bloklash va xodimlar.<br>Login va parolni xodimga o'zingiz yuborasiz. Kirish manzili: <b>${esc(location.origin)}/admin</b></div></div>`;
+    $$("[data-r]").forEach(s=>s.onchange=async()=>{try{await api("/admin/api/staff/"+s.dataset.r,{method:"PATCH",body:{role:s.value}});toast("Rol o'zgartirildi")}catch(e){toast(e.message,1)}});
+    $$("[data-pw]").forEach(b=>b.onclick=()=>{const row=b.closest(".srow");if(row.querySelector("[data-np]"))return;
+      row.insertAdjacentHTML("beforeend",`<div style="flex-basis:100%;display:flex;gap:8px"><input class="inp" data-np placeholder="Yangi parol" style="max-width:220px"><button class="btn sm pri" data-ns>Saqlash</button></div>`);
+      row.querySelector("[data-ns]").onclick=async()=>{try{await api("/admin/api/staff/"+b.dataset.pw,{method:"PATCH",body:{password:row.querySelector("[data-np]").value}});toast("Parol yangilandi");load()}catch(e){toast(e.message,1)}}});
+    $$("[data-rm]").forEach(b=>b.onclick=()=>{const row=b.closest(".srow");if(row.querySelector(".confirm"))return;
+      row.insertAdjacentHTML("beforeend",`<div class="confirm" style="flex-basis:100%"><b>Xodim o'chirilsinmi?</b><div><button class="btn sm" data-cn>Bekor</button><button class="btn sm red" data-cy>O'chirish</button></div></div>`);
+      row.querySelector("[data-cn]").onclick=()=>load();row.querySelector("[data-cy]").onclick=async()=>{try{await api("/admin/api/staff/"+b.dataset.rm,{method:"DELETE"});toast("O'chirildi");load()}catch(e){toast(e.message,1)}}});
+    $("#na").onclick=async()=>{try{await api("/admin/api/staff",{body:{login:$("#nl").value,password:$("#np").value,role:$("#nr").value}});toast("Xodim qo'shildi");load()}catch(e){toast(e.message,1)}};
+  };load();
+}
+
+/* ---------- Start ---------- */
+async function boot(){
+  try{const d=await api("/admin/api/me");ME=d.me;ADMIN_CHAT=d.adminChat}catch(e){if(e.message!=="auth")renderLogin();return}
+  let p="stats";try{p=localStorage.getItem("adm-page")||"stats"}catch(e){}
+  const ok=NAV.find(n=>n[0]===p&&can(n[3]));go(ok?p:"stats");
+}
+boot();
+</script>
+</body>
+</html>
