@@ -305,7 +305,15 @@ const weekKey=()=>{const d=new Date();const day=(d.getDay()+6)%7;d.setDate(d.get
 let P={done:{fel:[],ibora:[]},total:0,week:{k:weekKey(),n:0},streak:{n:0,d:""},ob:null};
 function load(s){try{const o=JSON.parse(s);if(o&&o.done)P=Object.assign(P,o)}catch(e){}}
 try{load(localStorage.getItem("k200")||"")}catch(e){}
-function save(){const s=JSON.stringify(P);try{localStorage.setItem("k200",s)}catch(e){}try{tg&&tg.CloudStorage.setItem("k200",s)}catch(e){}}
+function save(){const s=JSON.stringify(P);try{localStorage.setItem("k200",s)}catch(e){}try{tg&&tg.CloudStorage.setItem("k200",s)}catch(e){}scheduleSync()}
+/* ---------- Server bilan aloqa ---------- */
+const ONLINE=!!(tg&&tg.initData)&&/^https?:/.test(location.protocol);
+function apiPost(path,body){if(!ONLINE)return Promise.resolve(null);
+  return fetch(path,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(Object.assign({initData:tg.initData},body||{}))}).then(r=>r.ok?r.json():null).catch(()=>null)}
+let syncT;function scheduleSync(){if(!ONLINE)return;clearTimeout(syncT);syncT=setTimeout(()=>{
+  apiPost("/api/sync",{stats:{learned_fel:learned("fel"),learned_ibora:learned("ibora"),points_total:P.total,points_week:wk(),week_key:P.week.k,streak:P.streak.n}}).then(()=>fetchLB("w"))},1500)}
+const LB={w:null,a:null};let DENIED=false;
+function fetchLB(kind){return apiPost("/api/leaderboard",{kind}).then(d=>{if(d&&d.ok){LB[kind]=d;const v=cur&&cur();if(v&&["reyting","mashq","home","profil"].includes(v.v))render(true)}})}
 try{tg&&tg.CloudStorage.getItem("k200",(e,v)=>{if(!e&&v){const before=JSON.stringify(P);load(v);if(JSON.stringify(P)!==before)render(true)}})}catch(e){}
 function wk(){if(P.week.k!==weekKey())P.week={k:weekKey(),n:0};return P.week.n}
 function addPts(n){wk();P.week.n+=n;P.total+=n;
@@ -316,11 +324,15 @@ const isOpen=()=>true;
 const nextDay=t=>{for(let i=0;i<DAYS[t].length;i++)if(!isDone(t,i))return i;return -1};
 const learned=t=>P.done[t].length*PER[t];
 
-/* ---------- Reyting (demo) ---------- */
+/* ---------- Reyting (serverdan; server bo'lmasa namuna) ---------- */
 const RIVALS=[["Dilnoza",124,610],["Jasur",112,540],["Madina",95,488],["Sardor",80,402],["Nigora",71,350],["Bekzod",64,297],["Malika",58,260],["Azizbek",41,190],["Shahzoda",33,150],["Otabek",20,96]];
-function board(kind){const me={name:ME?ME+" (siz)":"Siz",p:kind==="w"?wk():P.total,me:true};
-  return [...RIVALS.map(r=>({name:r[0],p:kind==="w"?r[1]:r[2]})),me].sort((a,b)=>b.p-a.p||(a.me?-1:b.me?1:0))}
-const myRank=()=>board("w").findIndex(x=>x.me)+1;
+function board(kind){
+  const L=LB[kind];
+  if(L){const list=L.top.map(x=>({name:x.me?x.name+" (siz)":x.name,p:x.p,r:x.r,me:x.me}));
+    if(L.me&&!list.some(x=>x.me))list.push({name:L.me.name+" (siz)",p:L.me.p,r:L.me.r,me:true});return list}
+  const me={name:ME?ME+" (siz)":"Siz",p:kind==="w"?wk():P.total,me:true};
+  return [...RIVALS.map(r=>({name:r[0],p:kind==="w"?r[1]:r[2]})),me].sort((a,b)=>b.p-a.p||(a.me?-1:b.me?1:0)).map((x,i)=>Object.assign(x,{r:i+1}))}
+const myRank=()=>{const b=board("w"),m=b.find(x=>x.me);return m?m.r:b.length+1};
 
 /* ---------- Yordamchilar ---------- */
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
@@ -349,6 +361,7 @@ function render(keep){
   const v=cur();
   try{tg&&(ST.length>1&&v.v!=="ob"?tg.BackButton.show():tg.BackButton.hide())}catch(e){}
   act("");
+  if(DENIED){act("");$("#app").innerHTML=`<div class="scr" style="text-align:center;padding-top:80px;gap:12px"><div style="font-size:54px">🔒</div><h1 style="margin:0;font-size:24px">Platforma vaqtincha yopiq</h1><div class="muted">Savollaringiz bo'lsa, botga yozing.</div></div>`;return}
   if(!P.ob&&v.v!=="ob"){ST=[{v:"ob",step:0,a:{}}];return render()}
   if(P.ob&&v.v==="ob"&&!v.edit){ST=[{v:"home"}];return render()}
   ({home:vHome,weeks:vWeeks,week:vWeek,lesson:vLesson,mashq:vMashq,quiz:vQuiz,reyting:vReyting,profil:vProfil,ob:vOb})[cur().v](cur());
@@ -531,10 +544,11 @@ function vReyting(v){
   $("#app").innerHTML=`<div class="scr">${topBar("Reyting","Kim ko'p to'g'ri javob topdi")}
     <div class="seg"><button data-k="w" aria-pressed="${v.k==="w"}">Bu hafta</button><button data-k="a" aria-pressed="${v.k==="a"}">Umumiy</button></div>
     <div class="pod">${order.map(p=>{const r=B.indexOf(p);return `<div><span class="av" style="width:${SZ[r]}px;height:${SZ[r]}px;${p.me?"background:var(--sky-soft);color:var(--sky-ink)":""}">${esc(p.name[0])}</span><b>${esc(p.name)}</b><small>${p.p} ball</small><span class="col" style="height:${H[r]};background:${COL[r][0]};color:${COL[r][1]}">${r+1}</span></div>`}).join("")}</div>
-    <div class="lb">${rest.map(p=>{const r=B.indexOf(p)+1;return `<div class="${p.me?"me":""}"><span class="r">${r}</span><span class="av">${esc(p.name[0])}</span><b>${esc(p.name)}</b><span class="p">${p.p}</span></div>`}).join("")}</div>
-    <div class="note">${v.k==="w"?"«Bu hafta» har dushanba 0 dan boshlanadi. ":""}1 to'g'ri javob = 1 ball.<br>Demo: boshqa ishtirokchilar hozircha namuna.</div>
+    <div class="lb">${rest.map(p=>{const r=p.r||B.indexOf(p)+1;return `<div class="${p.me?"me":""}"><span class="r">${r}</span><span class="av">${esc(p.name[0])}</span><b>${esc(p.name)}</b><span class="p">${p.p}</span></div>`}).join("")}</div>
+    <div class="note">${v.k==="w"?"«Bu hafta» har dushanba 0 dan boshlanadi. ":""}1 to'g'ri javob = 1 ball.${LB[v.k]?"":"<br>Demo: boshqa ishtirokchilar hozircha namuna."}</div>
   </div>`;
   $$("[data-k]").forEach(b=>b.onclick=()=>{hap.t();replace({v:"reyting",k:b.dataset.k})});
+  if(!v.f){v.f=1;fetchLB(v.k)}
 }
 
 /* ---------- Profil ---------- */
@@ -601,5 +615,6 @@ function vOb(v){
 }
 
 render();
+if(ONLINE)apiPost("/api/me").then(d=>{if(d&&d.access===false){DENIED=true;render()}else{fetchLB("w");scheduleSync()}});
 
 </script>
