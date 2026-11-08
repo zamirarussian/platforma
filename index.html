@@ -1,11 +1,17 @@
+<!doctype html>
+<html lang="uz" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
 <title>Koreys tili 200</title>
-<meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Caveat:wght@700&family=Gowun+Dodum&family=Nanum+Myeongjo:wght@800&display=swap">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 /* Layout: minimal phone-first Mini App — home hub → weeks → days → lesson; sticky bottom action */
 :root{
+  color-scheme:light;
   --bg:#F6F9FD; --card:#FFFFFF; --line:#E3EAF4; --soft:#EEF3FA;
   --ink:#1C2A44; --muted:#5D6B85;
   --sky:#3E97E0; --btn:#2B7BC0; --btn-ink:#FFFFFF; --sky-soft:#E3F0FC; --sky-ink:#1F6AA8;
@@ -18,20 +24,6 @@
   --f-han:"Nanum Myeongjo","Noto Serif KR",serif;
   --f-hand:"Caveat","Comic Sans MS",cursive;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0F1626; --card:#18223A; --line:#27344F; --soft:#1F2B45;
-  --ink:#EAF0FA; --muted:#9AA8C2;
-  --sky:#5AAEF0; --btn:#4C9DE6; --btn-ink:#0B1220; --sky-soft:#1C3352; --sky-ink:#8CC4F5;
-  --pink:#F06C9B; --pink-soft:#3A2033; --pink-ink:#F59BBB;
-  --sun-soft:#3A3322; --sun-ink:#F2CF7C; --mark:#8A6A1E;
-  --ok:#5CCB94; --ok-soft:#173A2C; --bad:#F27E7E; --bad-soft:#3E1F24; --hero:#22325A; --hero-ink:#FFFFFF; --hero-mut:#B9C6DD; --hero-line:#36497A; --sun:#F2CF7C; color-scheme:dark}}
-:root[data-theme="dark"]{
-  --bg:#0F1626; --card:#18223A; --line:#27344F; --soft:#1F2B45;
-  --ink:#EAF0FA; --muted:#9AA8C2;
-  --sky:#5AAEF0; --btn:#4C9DE6; --btn-ink:#0B1220; --sky-soft:#1C3352; --sky-ink:#8CC4F5;
-  --pink:#F06C9B; --pink-soft:#3A2033; --pink-ink:#F59BBB;
-  --sun-soft:#3A3322; --sun-ink:#F2CF7C; --mark:#8A6A1E;
-  --ok:#5CCB94; --ok-soft:#173A2C; --bad:#F27E7E; --bad-soft:#3E1F24; --hero:#22325A; --hero-ink:#FFFFFF; --hero-mut:#B9C6DD; --hero-line:#36497A; --sun:#F2CF7C; color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{background:var(--bg)}
 body{color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.5;
@@ -291,7 +283,7 @@ const cssv=n=>getComputedStyle(document.documentElement).getPropertyValue(n).tri
 function tgColors(){if(!tg)return;try{tg.setHeaderColor(cssv("--bg"));tg.setBackgroundColor(cssv("--bg"))}catch(e){}}
 if(tg){
   document.documentElement.classList.add("in-tg");
-  const th=()=>document.documentElement.dataset.theme=tg.colorScheme==="dark"?"dark":"light";th();
+  const th=()=>document.documentElement.dataset.theme="light";th();
   try{tg.ready();tg.expand();tg.disableVerticalSwipes&&tg.disableVerticalSwipes()}catch(e){}
   try{tg.onEvent("themeChanged",()=>{th();tgColors()});tg.BackButton.onClick(()=>back())}catch(e){}
   tgColors();
@@ -329,7 +321,14 @@ const RIVALS=[["Dilnoza",124,610],["Jasur",112,540],["Madina",95,488],["Sardor",
 function board(kind){
   const L=LB[kind];
   if(L){const list=L.top.map(x=>({name:x.me?x.name+" (siz)":x.name,p:x.p,r:x.r,me:x.me}));
-    if(L.me&&!list.some(x=>x.me))list.push({name:L.me.name+" (siz)",p:L.me.p,r:L.me.r,me:true});return list}
+    const inTop=list.some(x=>x.me);
+    if(L.me&&!inTop)list.push({name:L.me.name+" (siz)",p:L.me.p,r:L.me.r,me:true});
+    // o'z balimni darhol hisobga olaman (server yangilanishini kutmasdan)
+    const mine=list.find(x=>x.me);if(mine)mine.p=Math.max(mine.p,kind==="w"?wk():P.total);
+    list.sort((a,b)=>b.p-a.p||(a.me?-1:b.me?1:0));
+    const last=L.top.length?L.top[L.top.length-1].p:0;
+    list.forEach((x,i)=>{if(!x.me||inTop||x.p>=last)x.r=i+1});
+    return list}
   const me={name:ME?ME+" (siz)":"Siz",p:kind==="w"?wk():P.total,me:true};
   return [...RIVALS.map(r=>({name:r[0],p:kind==="w"?r[1]:r[2]})),me].sort((a,b)=>b.p-a.p||(a.me?-1:b.me?1:0)).map((x,i)=>Object.assign(x,{r:i+1}))}
 const myRank=()=>{const b=board("w"),m=b.find(x=>x.me);return m?m.r:b.length+1};
@@ -377,7 +376,6 @@ function vHome(){
   const any=P.done.fel.length+P.done.ibora.length,r=myRank();
   $("#app").innerHTML=`<div class="scr">
     <div class="hello"><span><div>Salom${ME?", "+esc(ME):""}</div><h1>Bugun nimani<br>o'rganamiz?</h1></span><button class="av-btn" data-p aria-label="Profil">${avHTML()}</button></div>
-    ${P.ob&&P.ob.goal?`<span class="goal-chip">Maqsad: ${esc(P.ob.goal)}</span>`:""}
     <div class="sec">O'rganish</div>
     ${row("fel","동사")}${row("ibora","관용")}
     <div class="sec">Mashq va musobaqa</div>
@@ -604,7 +602,7 @@ function vOb(v){
     <div style="display:flex;flex-direction:column;gap:10px">${Q.o.map((o,i)=>`<button class="choice ${Q.multi?"multi":""}" data-c="${i}" aria-pressed="${on(o)}"><span class="ck">${on(o)?"✓":""}</span>${esc(o)}</button>`).join("")}</div></div>`;
   $$("[data-c]").forEach(b=>b.onclick=()=>{hap.t();const o=Q.o[b.dataset.c];
     if(Q.multi){const l=new Set(a[Q.k]||[]);l.has(o)?l.delete(o):l.add(o);a[Q.k]=[...l];replace(v)}
-    else{a[Q.k]=o;if(step<n)replace({...v,step:step+1});else replace(v)}});
+    else{a[Q.k]=o;replace(v)}});
   const ready=Q.multi?(a[Q.k]||[]).length>0:!!val;
   act(`${step>1?`<button class="btn" id="ob-b" style="flex:0 0 56px" aria-label="Orqaga">${I.back}</button>`:""}<button class="btn pri" id="ob-n" ${ready?"":"disabled style=\"opacity:.5\""}>${step<n?"Keyingi":"Tayyor"}</button>`);
   $("#ob-b")&&($("#ob-b").onclick=()=>{hap.t();replace({...v,step:step-1})});
