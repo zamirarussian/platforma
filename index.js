@@ -19,7 +19,11 @@ const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
 
 // ---------- Mini App (sayt) ----------
 const app = express();
-app.use(express.static(path.join(__dirname, "public"), { maxAge: "5m" }));
+// Platforma fayli: public/index.html yoki index.js yonidagi index.html
+const fs = require("fs");
+const PAGE = [path.join(__dirname, "public", "index.html"), path.join(__dirname, "index.html")].find((f) => fs.existsSync(f));
+if (!PAGE) console.error("index.html topilmadi! Uni index.js bilan bir joyga yuklang.");
+app.get(["/", "/index.html"], (_req, res) => (PAGE ? res.sendFile(PAGE) : res.status(404).send("index.html topilmadi")));
 app.use(express.json({ limit: "20kb" }));
 app.get("/health", (_req, res) => res.send("ok"));
 
